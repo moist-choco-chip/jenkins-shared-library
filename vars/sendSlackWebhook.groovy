@@ -23,7 +23,7 @@ def call(Map args = [:]) {
     String msg = "${icon} *${title}*\n${message}"
 
     def payload = [
-        text: msg
+        text: msg,
         attachments: [color: color, text:msg, mrkdwn_in:['msg']]
     ]
 
