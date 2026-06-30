@@ -19,7 +19,7 @@ def call(Map args = [:]) {
         icon = ':warning:'
     }
 
-    def payload = [[attachments: [color: color, text: message]]]
+    def payload = [attachments: [[color: color, text: message]]]
 
     String payloadFile = "slack_payload_${env.BUILD_NUMBER}.json"
 
