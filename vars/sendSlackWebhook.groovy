@@ -16,11 +16,11 @@ def call(Map args = [:]) {
         icon = ':warning:'
     }
 
-    String payloadFile = "slack_payload_${env.BUILD_NUMBER}.json"
-
     def payload = [
         text: "${icon} *${title}*\n${message}"
     ]
+
+    String payloadFile = "slack_payload_${env.BUILD_NUMBER}.json"
 
     writeFile(
         file: payloadFile,
@@ -34,7 +34,7 @@ def call(Map args = [:]) {
         if (isUnix()) {
             sh """
             set +x
-            curl -sS -X POST \\
+            curl -sS --fail -X POST \\
               -H "Content-Type: application/json" \\
               --data-binary "@${payloadFile}" \\
               "\$SLACK_WEBHOOK_URL"
@@ -48,7 +48,7 @@ def call(Map args = [:]) {
             @echo off
             chcp 65001 >nul
 
-            curl -sS -X POST ^
+            curl -sS --fail --ssl-no-revoke -X POST ^
               -H "Content-Type: application/json" ^
               --data-binary "@${payloadFile}" ^
               "%SLACK_WEBHOOK_URL%"
