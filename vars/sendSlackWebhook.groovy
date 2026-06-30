@@ -2,7 +2,6 @@ import groovy.json.JsonOutput
 
 def call(Map args = [:]) {
     String status = args.status ?: 'UNKNOWN'
-    String title = args.title ?: 'Jenkins Build'
     String message = args.message ?: ''
     String webhookCredentialId = args.webhookCredentialId ?: 'slack-webhook-url'
 
@@ -20,11 +19,8 @@ def call(Map args = [:]) {
         icon = ':warning:'
     }
 
-    String msg = "${icon} *${title}*\n${message}"
-
     def payload = [
-        text: msg,
-        attachments: [color: color, text:msg, mrkdwn_in:['msg']]
+        attachments: [color: color, text: message]
     ]
 
     String payloadFile = "slack_payload_${env.BUILD_NUMBER}.json"
