@@ -6,18 +6,25 @@ def call(Map args = [:]) {
     String message = args.message ?: ''
     String webhookCredentialId = args.webhookCredentialId ?: 'slack-webhook-url'
 
+    String color = '#999999'
     String icon = ':white_circle:'
 
     if (status == 'SUCCESS') {
+        color = 'good'
         icon = ':white_check_mark:'
     } else if (status == 'FAILURE') {
+        color = 'danger'
         icon = ':x:'
     } else if (status == 'UNSTABLE') {
+        color = 'warning'
         icon = ':warning:'
     }
 
+    String msg = "${icon} *${title}*\n${message}"
+
     def payload = [
-        text: "${icon} *${title}*\n${message}"
+        text: msg
+        attachments: [color: color, text:msg, mrkdwn_in:['msg']]
     ]
 
     String payloadFile = "slack_payload_${env.BUILD_NUMBER}.json"
